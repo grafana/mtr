@@ -206,7 +206,7 @@ func listenForSpecific4(conn *icmp.PacketConn, deadline time.Time, neededPeer st
 			continue
 		}
 
-		if typ, ok := x.Type.(ipv4.ICMPType); ok && typ.String() == "time exceeded" {
+		if typ, ok := x.Type.(ipv4.ICMPType); ok && typ == ipv4.ICMPTypeTimeExceeded {
 			body := x.Body.(*icmp.TimeExceeded).Data
 
 			index := bytes.Index(body, sent[:4])
@@ -225,7 +225,7 @@ func listenForSpecific4(conn *icmp.PacketConn, deadline time.Time, neededPeer st
 			}
 		}
 
-		if typ, ok := x.Type.(ipv4.ICMPType); ok && typ.String() == "echo reply" {
+		if typ, ok := x.Type.(ipv4.ICMPType); ok && typ == ipv4.ICMPTypeEchoReply {
 			b, _ := x.Body.Marshal(1)
 			if string(b[4:]) != string(neededBody) {
 				continue
